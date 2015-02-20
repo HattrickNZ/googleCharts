@@ -1,0 +1,31 @@
+<!-- taken from here http://stackoverflow.com/questions/20237691/using-csv-with-google-charts-->
+<html>
+<head>
+<script src="https://www.google.com/jsapi"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://jquery-csv.googlecode.com/files/jquery.csv-0.71.js"></script>
+<script>
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        $.get("http://172.21.200.37/~kevinsmith/googChart/testchart.csv", function(csvString) {
+        var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+        var data = new google.visualization.arrayToDataTable(arrayData);
+        var view = new google.visualization.DataView(data);
+            view.setColumns([0,1]);
+        var options =   {
+            hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+            vAxis: {title: data.getColumnLabel(1), minValue: data.getColumnRange(1).min, maxValue: data.getColumnRange(1).max},
+            legend: 'none'
+            }
+        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+        chart.draw(view, options);
+    });
+}
+</script>
+</head>
+<body>
+<div id="chart_div"></div>
+</body>
+</html>

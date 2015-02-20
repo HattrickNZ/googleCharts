@@ -1,0 +1,78 @@
+<!-- taken from here http://stackoverflow.com/questions/28317438/csv-to-html-table-->
+<html>
+<head>
+
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="papaparse.min.js"></script> <!-- https://github.com/mholt/PapaParse/blob/master/papaparse.min.js -->
+ 
+ <style>
+ #results {
+	width: 100%;
+	border-collapse: collapse;
+}
+table, th, td {
+	border: 1px solid black;
+}
+ 
+ </style>
+ 
+<script>
+
+//var csv_array = ["http://172.21.200.37/~kevinsmith/googChart/testchart.csv"]; //,"def.csv","ghi.csv"];
+$(function() {
+    Papa.parse("testchart.csv", {
+        download: true,
+        complete: function(results) {
+            console.log("Remote file parsed!", results.data);
+            $.each(results.data, function(i, el) {
+                var row = $("<tr/>");
+                //row.append($("<td/>").text(i));
+                $.each(el, function(j, cell) {
+                    if (cell !== "")
+                        row.append($("<td/>").text(cell));
+                });
+                $("#results tbody").append(row);
+            });
+        }
+    });
+}); 
+</script>
+</head>
+<body>
+
+
+	<table id="results">
+		<tbody>
+		</tbody>
+	</table>
+	
+	<br>
+	<br>
+
+<table>
+  <thead>
+  <tr>
+     <th>Month</th>
+     <th>Savings</th>
+  </tr>
+  </thead>
+  <tfoot>
+  <tr>
+      <td>Sum</td>
+      <td>$180</td>
+  </tr>
+  </tfoot>
+  <tbody>
+  <tr>
+     <td>January</td>
+     <td>$100</td>
+  </tr>
+  <tr>
+      <td>February</td>
+      <td>$80</td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
